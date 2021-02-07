@@ -1,10 +1,10 @@
-##########################
-## Autor Edkar Chachati ##
-##########################
+########################
+# Autor Edkar Chachati #
+#   Twitter @EJChati   #
+########################
 
 import logging  # Para ver lo que hace el bot
 
-import telebot
 import telegram
 from telegram.ext import Updater, CommandHandler
 from selenium import webdriver
@@ -14,19 +14,6 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,"
 )
 logger = logging.getLogger()
-
-if __name__ == "__main__":
-    # obtener info del bot
-    bot = telegram.Bot(token=TOKEN)
-    print(bot.getMe())
-
-    # Obtener Tasa del dolar
-    driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
-    driver.get('https://exchangemonitor.net/dolar-promedio-venezuela')
-    promedio_tasa_dolar = driver.find_element_by_tag_name('h2').text
-    driver.quit()
-    #promedio_tasa_dolar = 'xd'
-    # print(promedio_tasa_dolar)
 
 
 def getBotInfo(update, context):
@@ -110,19 +97,31 @@ def getContactoDesarrollador(update, context):
     )
 
 
-# updater se conecta y recibe los mensajes
-# noinspection PyUnboundLocalVariable
-updater = Updater(bot.token, use_context=True)
+if __name__ == "__main__":
+    # obtener info del bot
+    bot = telegram.Bot(token=TOKEN)
+    print(bot.getMe())
 
-# crear despachador
-dispatcher = updater.dispatcher
+    # Obtener Tasa del dolar
+    driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
+    driver.get('https://exchangemonitor.net/dolar-promedio-venezuela')
+    promedio_tasa_dolar = driver.find_element_by_tag_name('h2').text
+    driver.quit()
 
-# crear comando
-dispatcher.add_handler(CommandHandler("start", getBotInfo))
-dispatcher.add_handler(CommandHandler("horario", getHorario))
-dispatcher.add_handler(CommandHandler("ubicacion", getUbicacion))
-dispatcher.add_handler(CommandHandler("tasaCambio", getTasaCambio))
-dispatcher.add_handler(CommandHandler("contact", getContactoDesarrollador))
+    # updater se conecta y recibe los mensajes
+    # noinspection PyUnboundLocalVariable
+    updater = Updater(bot.token, use_context=True)
 
-updater.start_polling()  # Estar verificando si esta recibiendo mensajes, ponte a vivir y existir
-updater.idle()  # terminar bot con ctrl+c
+    # crear despachador
+    dispatcher = updater.dispatcher
+
+    # crear comando
+    dispatcher.add_handler(CommandHandler("start", getBotInfo))
+    dispatcher.add_handler(CommandHandler("horario", getHorario))
+    dispatcher.add_handler(CommandHandler("ubicacion", getUbicacion))
+    dispatcher.add_handler(CommandHandler("tasaCambio", getTasaCambio))
+    dispatcher.add_handler(CommandHandler("contact", getContactoDesarrollador))
+
+    # Empezar a ejecutar el bot
+    updater.start_polling()  # Estar verificando si esta recibiendo mensajes, ponte a vivir y existir
+    updater.idle()  # terminar bot con ctrl+c
