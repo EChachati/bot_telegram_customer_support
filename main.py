@@ -23,9 +23,9 @@ if __name__ == "__main__":
 
     # crear comando
     dispatcher.add_handler(CommandHandler("start", commands.getBotInfo))
-    dispatcher.add_handler(CommandHandler("horario", commands.getHorario))
-    dispatcher.add_handler(CommandHandler("ubicacion", commands.getUbicacion))
-    dispatcher.add_handler(CommandHandler("tasaCambio", commands.getTasaCambio))
+    dispatcher.add_handler(CommandHandler("horario", commands.getSchedule))
+    dispatcher.add_handler(CommandHandler("ubicacion", commands.getLocation))
+    dispatcher.add_handler(CommandHandler("tasaCambio", commands.getExchange))
     dispatcher.add_handler(CommandHandler("contact", commands.getContactoDesarrollador))
 
     # Empezar a ejecutar el bot

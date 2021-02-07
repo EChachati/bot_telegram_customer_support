@@ -14,7 +14,7 @@ def get_dolar_value():
     return promedio_tasa_dolar
 
 
-def get_tasa_cambio(): return f"La Tasa de cambio que manejamos usualmente es la tasa promedio, " \
+def get_exchange_value(): return f"La Tasa de cambio que manejamos usualmente es la tasa promedio, " \
                               f"actualmente es de:\n {DOLAR}"
 
 
@@ -38,10 +38,10 @@ def START_INFO(name: str = ""):
         f'\n\n Y recuerda <b>¡¡Mass Sabor con Mass Pan!!</b>')
 
 
-HORARIO = (
+SCHEDULE = (
     "Actualmente nuestro horario es de:\n Lunes A Viernes:\n\n 8 A.M. hasta las 4 P.M.\n\n<b> En horario corrido </b>")
 
-UBICACION = "Nos encontramos en Urb. Independencia, 1 Era Etapa, calle 23 (calle siguente a la Urb. Tomas Marzal) frente" \
+LOCATION = "Nos encontramos en Urb. Independencia, 1 Era Etapa, calle 23 (calle siguente a la Urb. Tomas Marzal) frente" \
             " al autolavado, Coro (Venezuela), o <a href='https://www.google.com/maps/dir//11.423235,-69.640745" \
             "/@11.4251583,-69.6442251,16.27z/data=!4m2!4m1!3e0?hl=es'>Ir por GPS</a> "
 

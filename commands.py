@@ -26,7 +26,7 @@ def getBotInfo(update, context):
     )
 
 
-def getHorario(update, context):
+def getSchedule(update, context):
     mybot = context.bot
     username = update.effective_user.username
     name = update.effective_user["first_name"]
@@ -34,11 +34,11 @@ def getHorario(update, context):
     mybot.sendMessage(
         chat_id=update.message.chat_id,
         parse_mode="HTML",
-        text=constants.HORARIO
+        text=constants.SCHEDULE
     )
 
 
-def getUbicacion(update, context):
+def getLocation(update, context):
     # mybot = context.bot
     print(update)
     # chat_id = update.message.chat_id
@@ -46,7 +46,7 @@ def getUbicacion(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la ubicacion al bot')
 
-    update.message.reply_text(parse_mode="HTML", text=constants.UBICACION)
+    update.message.reply_text(parse_mode="HTML", text=constants.LOCATION)
 
     # mybot.sendMessage(
     #    chat_id=chat_id,
@@ -55,10 +55,11 @@ def getUbicacion(update, context):
     # )
 
 
-def send_ubication(update, context):    update.message.reply_text(constants.UBICACION, parse_mode='HTML')
+# TODO
+def send_location(update, context):    update.message.reply_text(constants.LOCATION, parse_mode='HTML')
 
 
-def getTasaCambio(update, context):
+def getExchange(update, context):
     mybot = context.bot
     chat_id = update.message.chat_id
     username = update.effective_user.username
@@ -67,7 +68,7 @@ def getTasaCambio(update, context):
     mybot.sendMessage(
         chat_id=chat_id,
         parse_mode="HTML",
-        text=constants.get_tasa_cambio()
+        text=constants.get_exchange_value()
     )
 
 
