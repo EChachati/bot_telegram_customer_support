@@ -6,14 +6,12 @@
 import logging  # Para ver lo que hace el bot
 
 import telegram
+import constants
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Updater, CommandHandler
-from selenium import webdriver
+from telegram.ext import Updater, CommandHandler, ConversationHandler, CallbackQueryHandler
 from secret import TOKEN
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
 
 
@@ -39,7 +37,10 @@ def getBotInfo(update, context):
              f'  ▪  Instagram<a href="https://www.instagram.com/masspanve/"> @MassPanVe</a>\n'
              f'  ▪  Facebook <a href="https://www.facebook.com/masspanve/"> Panadería Mass Pan</a>\n'
              f'  ▪  WhatsApp <a href="https://www.whatsapp.com/catalog/584127736899/?app_absent=0"> +584127736899</a>'
-             f'\n\n Y recuerda <b>¡¡Mass Sabor con Mass Pan!!</b>'
+             f'\n\n Y recuerda <b>¡¡Mass Sabor con Mass Pan!!</b>',
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(text=' 📍   Ver Ubicación ', callback_data="ubicacion")],  # TODO Fix
+        ])
     )
 
 
@@ -51,20 +52,25 @@ def getHorario(update, context):
     mybot.sendMessage(
         chat_id=update.message.chat_id,
         parse_mode="HTML",
-        text="Actualmente nuestro horario es de:\n Lunes A Viernes:\n\n 8 A.M. hasta las 4 P.M.\n\n<b> En horario corrido </b>"
+        text=constants.HORARIO
     )
 
 
 def getUbicacion(update, context):
     mybot = context.bot
+    print(update)
+    # chat_id = update.message.chat_id
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la ubicacion al bot')
-    mybot.sendMessage(
-        chat_id=update.message.chat_id,
-        parse_mode="HTML",
-        text="Nos encontramos en Urb. Independencia, 1 Era Etapa, calle 23 (calle siguente a la Urb. Tomas Marzal) frente al autolavado, Coro (Venezuela), o <a href='https://www.google.com/maps/dir//11.423235,-69.640745/@11.4251583,-69.6442251,16.27z/data=!4m2!4m1!3e0?hl=es'>Ir por GPS</a> "
-    )
+
+    update.message.reply_text(parse_mode="HTML", text=constants.UBICACION)
+
+    # mybot.sendMessage(
+    #    chat_id=chat_id,
+    #    parse_mode="HTML",
+    #    text="Nos encontramos en Urb. Independencia, 1 Era Etapa, calle 23 (calle siguente a la Urb. Tomas Marzal) frente al autolavado, Coro (Venezuela), o <a href='https://www.google.com/maps/dir//11.423235,-69.640745/@11.4251583,-69.6442251,16.27z/data=!4m2!4m1!3e0?hl=es'>Ir por GPS</a> "
+    # )
 
 
 def getTasaCambio(update, context):
@@ -76,7 +82,7 @@ def getTasaCambio(update, context):
     mybot.sendMessage(
         chat_id=chat_id,
         parse_mode="HTML",
-        text=f"La Tasa de cambio que manejamos usualmente es la tasa promedio, actualmente es de:\n {promedio_tasa_dolar}"
+        text=constants.get_tasa_cambio(promedio_tasa_dolar)
     )
 
 
@@ -86,17 +92,14 @@ def getContactoDesarrollador(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha solicitado la información del desarrollador')
 
+    button_contacta_al_desarrollador = InlineKeyboardButton(text='Contactar al desarrollador', url="telegram.me/echachati")
+
     mybot.sendMessage(
         chat_id=update.message.chat_id,
         parse_mode="HTML",
-        text=f"Este Bot esta siendo actualmente desarrollado por Edkar Chachati. Redes sociales:\n\n"
-             f"  ▪  Instagram<a href='https://www.instagram.com/echachati/'> @EChachati</a>\n"
-             f'  ▪  Twitter <a href="https://twitter.com/EJChati">      @EJChati</a>\n'
-             f'  ▪  LinkedIn <a href="https://www.linkedin.com/in/echachati?originalSubdomain=ve">    EChachati</a>\n'
-             f'  ▪  Github <a href="https://github.com/EjChati">       EJChati</a>\n'
-             f'  ▪  Telegram <a href="https://telegram.me/echachati">  @Echachati</a>\n',
+        text=constants.DEVELOPER_INFO,
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(text='Contacta al desarrollador', url="telegram.me/echachati")],
+            [button_contacta_al_desarrollador],
         ])
     )
 
@@ -106,11 +109,7 @@ if __name__ == "__main__":
     bot = telegram.Bot(token=TOKEN)
     print(bot.getMe())
 
-    # Obtener Tasa del dolar
-    driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
-    driver.get('https://exchangemonitor.net/dolar-promedio-venezuela')
-    promedio_tasa_dolar = driver.find_element_by_tag_name('h2').text
-    driver.quit()
+    promedio_tasa_dolar = constants.get_dolar_value()
 
     # updater se conecta y recibe los mensajes
     # noinspection PyUnboundLocalVariable
