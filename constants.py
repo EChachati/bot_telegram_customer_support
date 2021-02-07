@@ -1,4 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.by import By
 
 
 # Methods
@@ -6,14 +9,13 @@ def get_dolar_value():
     # Obtener Tasa del dolar
     driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
     driver.get('https://exchangemonitor.net/dolar-promedio-venezuela')
-    promedio_tasa_dolar = driver.find_element_by_tag_name('h2').text
+    promedio_tasa_dolar = WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.TAG_NAME, 'h2'))).text
     driver.quit()
     return promedio_tasa_dolar
 
 
-def get_tasa_cambio(
-        promedio_tasa_dolar: int): return f"La Tasa de cambio que manejamos usualmente es la tasa promedio, " \
-                                          f"actualmente es de:\n {promedio_tasa_dolar}"
+def get_tasa_cambio(): return f"La Tasa de cambio que manejamos usualmente es la tasa promedio, " \
+                              f"actualmente es de:\n {DOLAR}"
 
 
 # String Constants

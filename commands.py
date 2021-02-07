@@ -67,7 +67,7 @@ def getTasaCambio(update, context):
     mybot.sendMessage(
         chat_id=chat_id,
         parse_mode="HTML",
-        text=constants.get_tasa_cambio(constants.DOLAR)
+        text=constants.get_tasa_cambio()
     )
 
 
