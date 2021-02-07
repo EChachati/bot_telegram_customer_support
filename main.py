@@ -6,6 +6,7 @@
 import logging  # Para ver lo que hace el bot
 
 import telegram
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Updater, CommandHandler
 from selenium import webdriver
 from secret import TOKEN
@@ -94,6 +95,9 @@ def getContactoDesarrollador(update, context):
              f'  ▪  LinkedIn <a href="https://www.linkedin.com/in/echachati?originalSubdomain=ve">    EChachati</a>\n'
              f'  ▪  Github <a href="https://github.com/EjChati">       EJChati</a>\n'
              f'  ▪  Telegram <a href="https://telegram.me/echachati">  @Echachati</a>\n',
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(text='Contacta al desarrollador', url="telegram.me/echachati")],
+        ])
     )
 
 
