@@ -17,19 +17,24 @@ def get_tasa_cambio(
 
 
 # String Constants
-START_INFO = (
-    f'¡Hola! Soy un bot encargado de ayudarte con tus compras en la Panaderia Mass Pan, sin embargo aun '
-    f'me encuentro en desarrollo, puedes escribirle a nuestro equipo @MassPan o al número de telefono +58 412 773 6899 '
-    f'para resolver tu dudas\n\n'
-    f'Puedes clickear en estos comandos:\n'
-    f'  📍   /ubicacion\n'
-    f'  📆   /horario\n'
-    f'  🏦   /tasaCambio\n\n'
-    f'Puedes seguirnos en nuestras redes sociales:\n'
-    f'  ▪  Instagram<a href="https://www.instagram.com/masspanve/"> @MassPanVe</a>\n'
-    f'  ▪  Facebook <a href="https://www.facebook.com/masspanve/"> Panadería Mass Pan</a>\n'
-    f'  ▪  WhatsApp <a href="https://www.whatsapp.com/catalog/584127736899/?app_absent=0"> +584127736899</a>'
-    f'\n\n Y recuerda <b>¡¡Mass Sabor con Mass Pan!!</b>')
+DOLAR = get_dolar_value()
+
+
+def START_INFO(name: str = ""):
+    return (
+        f'¡Hola! {name} Soy un bot encargado de ayudarte con tus compras en la Panaderia Mass Pan, sin embargo aun '
+        f'me encuentro en desarrollo, puedes escribirle a nuestro equipo @MassPan o al número de telefono +58 412 773 6899 '
+        f'para resolver tu dudas\n\n'
+        f'Puedes clickear en estos comandos:\n'
+        f'  📍   /ubicacion\n'
+        f'  📆   /horario\n'
+        f'  🏦   /tasaCambio\n\n'
+        f'Puedes seguirnos en nuestras redes sociales:\n'
+        f'  ▪  Instagram<a href="https://www.instagram.com/masspanve/"> @MassPanVe</a>\n'
+        f'  ▪  Facebook <a href="https://www.facebook.com/masspanve/"> Panadería Mass Pan</a>\n'
+        f'  ▪  WhatsApp <a href="https://www.whatsapp.com/catalog/584127736899/?app_absent=0"> +584127736899</a>'
+        f'\n\n Y recuerda <b>¡¡Mass Sabor con Mass Pan!!</b>')
+
 
 HORARIO = (
     "Actualmente nuestro horario es de:\n Lunes A Viernes:\n\n 8 A.M. hasta las 4 P.M.\n\n<b> En horario corrido </b>")
