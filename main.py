@@ -98,8 +98,6 @@ def getContactoDesarrollador(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha solicitado la información del desarrollador')
 
-
-    keyboard = telegram.InlineKeyboardButton('Message the developer', url='telegram.me/echachati')
     mybot.sendMessage(
         chat_id=update.message.chat_id,
         parse_mode="HTML",
@@ -109,7 +107,6 @@ def getContactoDesarrollador(update, context):
              f'  ▪  LinkedIn <a href="https://www.linkedin.com/in/echachati?originalSubdomain=ve">    EChachati</a>\n'
              f'  ▪  Github <a href="https://github.com/EjChati">       EJChati</a>\n'
              f'  ▪  Telegram <a href="https://telegram.me/echachati">  @Echachati</a>\n',
-        reply_markup=keyboard
     )
 
 
