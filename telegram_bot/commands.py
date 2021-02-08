@@ -1,8 +1,10 @@
 import logging
+import os
 
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 import constants
+from telegram_bot.utils import get_barcode
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
@@ -87,3 +89,23 @@ def getContactoDesarrollador(update, context):
             [button_contacta_al_desarrollador],
         ])
     )
+
+
+def codebarHandler(update, context):
+    # Declarate vars
+    bot = context.bot
+    username = update.effective_user.username
+    name = update.effective_user["first_name"]
+    file_id = update.message.photo[-1].file_id
+
+    # Download the file
+    newFile = bot.getFile(file_id)
+    newFile.download('test.jpg')
+
+    # Get the bar code
+    code = get_barcode('test.jpg')
+    bot.sendMessage(chat_id=update.message.chat_id, text=f"El Código de barras es {code}")
+    logger.info(f'El user {username} ({name}) ha enviado un código de barras')
+
+    # Delete the file
+    os.remove('test.jpg')

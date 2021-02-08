@@ -4,9 +4,9 @@
 ########################
 
 import telegram
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-import commands
+from telegram_bot import commands
 from secret import TOKEN
 
 if __name__ == "__main__":
@@ -27,6 +27,8 @@ if __name__ == "__main__":
     dispatcher.add_handler(CommandHandler("ubicacion", commands.getLocation))
     dispatcher.add_handler(CommandHandler("tasaCambio", commands.getExchange))
     dispatcher.add_handler(CommandHandler("contact", commands.getContactoDesarrollador))
+
+    dispatcher.add_handler(MessageHandler(Filters.photo, commands.codebarHandler))
 
     # Empezar a ejecutar el bot
     updater.start_polling()  # Estar verificando si esta recibiendo mensajes, ponte a vivir y existir
