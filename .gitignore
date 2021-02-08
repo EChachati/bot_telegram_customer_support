@@ -130,7 +130,7 @@ dmypy.json
 .pyre/
 
 # Secret elementes
-telegram_bot/secret.py
+src/secret.py
 
 # XML and IML
 *.xml

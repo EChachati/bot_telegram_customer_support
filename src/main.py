@@ -6,7 +6,7 @@
 import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-from telegram_bot import commands
+from src import commands
 from secret import TOKEN
 
 if __name__ == "__main__":

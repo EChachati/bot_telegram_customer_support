@@ -4,7 +4,7 @@ import os
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 import constants
-from telegram_bot.utils import get_barcode
+from src.utils import get_barcode
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
