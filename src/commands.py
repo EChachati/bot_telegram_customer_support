@@ -1,9 +1,10 @@
 import logging
 import os
 
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import InlineKeyboardMarkup
 
 import constants
+from src import buttons
 from src.utils import get_barcode
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
@@ -22,56 +23,50 @@ def getBotInfo(update, context):
         chat_id=chat_id,
         parse_mode="HTML",
         text=constants.START_INFO(name),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(text=' 📍   Ver Ubicación ', callback_data="ubicacion")],  # TODO Fix
-        ])
+        reply_markup=buttons.social_networks
     )
+    update.message.reply_text(text="Elige un comando: ", reply_markup=buttons.replyKeyboard)
 
 
 def getSchedule(update, context):
-    mybot = context.bot
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido el horario al bot')
-    mybot.sendMessage(
-        chat_id=update.message.chat_id,
-        parse_mode="HTML",
-        text=constants.SCHEDULE
-    )
+    try:
+        update.message.reply_text(text=constants.SCHEDULE, parse_mode="HTML")
+    except:
+        query = update.callback_query
+        query.answer()
+        query.edit_message_text(text=constants.SCHEDULE, parse_mode='HTML')
 
 
 def getLocation(update, context):
-    # mybot = context.bot
-    print(update)
-    # chat_id = update.message.chat_id
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la ubicacion al bot')
-
-    update.message.reply_text(parse_mode="HTML", text=constants.LOCATION)
-
-    # mybot.sendMessage(
-    #    chat_id=chat_id,
-    #    parse_mode="HTML",
-    #    text="Nos encontramos en Urb. Independencia, 1 Era Etapa, calle 23 (calle siguente a la Urb. Tomas Marzal) frente al autolavado, Coro (Venezuela), o <a href='https://www.google.com/maps/dir//11.423235,-69.640745/@11.4251583,-69.6442251,16.27z/data=!4m2!4m1!3e0?hl=es'>Ir por GPS</a> "
-    # )
-
-
-# TODO
-def send_location(update, context):    update.message.reply_text(constants.LOCATION, parse_mode='HTML')
+    try:
+        update.message.reply_text(parse_mode="HTML", text=constants.LOCATION)
+    except:
+        query = update.callback_query
+        query.answer()
+        query.edit_message_text(text=constants.LOCATION, parse_mode='HTML')
 
 
 def getExchange(update, context):
     mybot = context.bot
-    chat_id = update.message.chat_id
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la Tasa de Cambio al bot')
-    mybot.sendMessage(
-        chat_id=chat_id,
-        parse_mode="HTML",
-        text=constants.get_exchange_value()
-    )
+    try:
+        mybot.sendMessage(
+            chat_id=update.message.chat_id,
+            parse_mode="HTML",
+            text=constants.EXCHANGE_VALUE
+        )
+    except:
+        query = update.callback_query
+        query.answer()
+        query.edit_message_text(text=constants.EXCHANGE_VALUE, parse_mode='HTML')
 
 
 def getContactoDesarrollador(update, context):
@@ -79,15 +74,12 @@ def getContactoDesarrollador(update, context):
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha solicitado la información del desarrollador')
-    button_contacta_al_desarrollador = InlineKeyboardButton(text='Contactar al desarrollador',
-                                                            url="telegram.me/echachati")
+
     mybot.sendMessage(
         chat_id=update.message.chat_id,
         parse_mode="HTML",
         text=constants.DEVELOPER_INFO,
-        reply_markup=InlineKeyboardMarkup([
-            [button_contacta_al_desarrollador],
-        ])
+        reply_markup=buttons.developer_social_networks
     )
 
 
@@ -109,3 +101,41 @@ def codebarHandler(update, context):
 
     # Delete the file
     os.remove('test.jpg')
+
+
+def getAllCommands(update, context):
+    bot = context.bot
+
+    bot.sendMessage(
+        chat_id=update.message.chat_id,
+        text=f"Todos nuestros comandos son:",
+        reply_markup=InlineKeyboardMarkup([
+            [buttons.location],
+            [buttons.exchange],
+            [buttons.schedule]
+        ])
+    )
+
+
+def textHandler(update, context):
+    # Declarate vars
+    username = update.effective_user.username
+    name = update.effective_user["first_name"]
+    text = (update.message['text'])
+
+    if text == '📍   Ver Ubicación':
+        getLocation(update, context)
+    elif text == '📆   Ver Horario':
+        getSchedule(update, context)
+    elif text == '🏦   Ver Tasa de Cambio':
+        getExchange(update, context)
+    elif text == '🔍 Ver Codigo de Barras':
+        logger.info(f'El user {username} ({name}) quiere revisar un código de barras')
+        update.message.reply_text("Envianos una foto nitida del código de barras a analizar")
+    elif text == '📱 Redes Sociales':
+        logger.info(f'El user {username} ({name}) quiere conocer las redes sociales')
+        update.message.reply_text("Siguenos en nuestras Redes Sociales", reply_markup=buttons.social_networks)
+    elif text == '📓 Contacta al Desarrollador':
+        getContactoDesarrollador(update, context)
+    else:
+        print(f'{text} is not a command')
