@@ -37,7 +37,6 @@ SCHEDULE = (
     "Actualmente nuestro horario es de:\n Lunes A Viernes:\n\n 8 A.M. hasta las 4 P.M.\n\n<b> En horario corrido </b>")
 
 LOCATION = "Nos encontramos en Urb. Independencia, 1 Era Etapa, calle 23 (calle siguente a la Urb. Tomas Marzal) frente" \
-           " al autolavado, Coro (Venezuela), o <a href='https://www.google.com/maps/dir//11.423235,-69.640745" \
-           "/@11.4251583,-69.6442251,16.27z/data=!4m2!4m1!3e0?hl=es'>Ir por GPS</a> "
+           " al autolavado, Coro (Venezuela)"
 
 DEVELOPER_INFO = "Este Bot esta siendo actualmente desarrollado por Edkar Chachati. Redes sociales:\n\n"

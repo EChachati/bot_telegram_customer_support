@@ -45,11 +45,11 @@ def getLocation(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la ubicacion al bot')
     try:
-        update.message.reply_text(parse_mode="HTML", text=constants.LOCATION)
+        update.message.reply_text(text=constants.LOCATION, reply_markup=InlineKeyboardMarkup([[buttons.GPS]]))
     except:
         query = update.callback_query
         query.answer()
-        query.edit_message_text(text=constants.LOCATION, parse_mode='HTML')
+        query.edit_message_text(text=constants.LOCATION, reply_markup=InlineKeyboardMarkup([[buttons.GPS]]))
 
 
 def getExchange(update, context):

@@ -17,6 +17,7 @@ telegram = InlineKeyboardButton(text='▪  Telegram  ▪', url='telegram.me/mass
 location = InlineKeyboardButton(text=' 📍   Ver Ubicación ', callback_data='location')  # TODO
 schedule = InlineKeyboardButton(text=' 📆   Ver Horario', callback_data='schedule')
 exchange = InlineKeyboardButton(text=' 🏦   Ver Tasa de Cambio', callback_data='exchange')
+GPS = InlineKeyboardButton (text='Ir por GPS', url='https://www.google.com/maps/dir//11.423235,-69.640745@11.4251583,-69.6442251,16.27z/data=!4m2!4m1!3e0?hl=es')
 
 # InlineKeyboardMarkup
 keyboard_commands = InlineKeyboardMarkup([
