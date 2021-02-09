@@ -38,6 +38,9 @@ if __name__ == "__main__":
     dispatcher.add_handler(CallbackQueryHandler(commands.getExchange, pattern='exchange'))
     dispatcher.add_handler(CallbackQueryHandler(commands.getLocation, pattern='location'))
 
+    # Actualization Message
+    # actualization_message(bot)
+
     # Empezar a ejecutar el bot
     updater.start_polling()  # Estar verificando si esta recibiendo mensajes, ponte a vivir y existir
     updater.idle()  # terminar bot con ctrl+c

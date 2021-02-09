@@ -4,6 +4,7 @@ import os
 from telegram import InlineKeyboardMarkup
 
 import constants
+import database_mysql as sql
 from src import buttons
 from src.utils import get_barcode
 
@@ -16,8 +17,12 @@ def getBotInfo(update, context):
     print(update.message)
     chat_id = update.message.chat_id
     name = update.effective_user["first_name"]
+    last_name = update.effective_user["last_name"]
     username = update.effective_user.username
     logger.info(f'El user {username} ({name}) ha iniciado el bot')
+
+    if not sql.is_active_user(chat_id):
+        sql.insert_user(chat_id=chat_id, username=username, first_name=name, last_name=last_name)
 
     mybot.sendMessage(
         chat_id=chat_id,
@@ -33,7 +38,7 @@ def getSchedule(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido el horario al bot')
     try:
-        update.message.reply_text(text=constants.SCHEDULE, parse_mode="HTML")
+        context.bot.sendMessage(text=constants.SCHEDULE, parse_mode="HTML")
     except:
         query = update.callback_query
         query.answer()
@@ -44,8 +49,13 @@ def getLocation(update, context):
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la ubicacion al bot')
+
     try:
-        update.message.reply_text(text=constants.LOCATION, reply_markup=InlineKeyboardMarkup([[buttons.GPS]]))
+        update.message.reply_text(text=constants.LOCATION)
+        context.bot.sendLocation(
+            reply_markup=InlineKeyboardMarkup([[buttons.GPS]]),
+            chat_id=update.message.chat_id,
+            location=constants.gps_location)
     except:
         query = update.callback_query
         query.answer()

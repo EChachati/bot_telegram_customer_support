@@ -8,3 +8,4 @@ cryptography~=3.4.2
 setuptools~=52.0.0
 telegram~=0.0.1
 opencv-python~=4.5.1.48
+mysql-connector-python~=8.0.23
