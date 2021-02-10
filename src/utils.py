@@ -1,3 +1,6 @@
+from datetime import datetime
+from threading import Thread
+import  time
 import cv2
 from pyzbar.pyzbar import decode
 
@@ -21,3 +24,10 @@ def actualization_message(bot):
                  " se ha añadido: "
                  "\n - Un Menu de acciones"
                  "\n - Lector de codigos de barras por fotos")
+
+
+def add_to_unknown_messages(string):
+    file = open("unknown_messages_file.txt", "a")
+    file.write(f'\n{string}')
+    file.close()
+

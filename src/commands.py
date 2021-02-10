@@ -6,7 +6,7 @@ from telegram import InlineKeyboardMarkup
 import constants
 import database_mysql as sql
 from src import buttons
-from src.utils import get_barcode
+from src.utils import get_barcode, add_to_unknown_messages
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
@@ -148,4 +148,6 @@ def textHandler(update, context):
     elif text == '📓 Contacta al Desarrollador':
         getContactoDesarrollador(update, context)
     else:
-        print(f'{text} is not a command')
+        unexcepted_command = (f'{username}({name}) send "{text}" is not a command')
+        logger.info(unexcepted_command)
+        add_to_unknown_messages(unexcepted_command)
