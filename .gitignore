@@ -131,6 +131,7 @@ dmypy.json
 
 # Secret elementes
 src/secret.py
+unknown_messages_file.txt
 
 # XML and IML
 *.xml
