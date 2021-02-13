@@ -17,55 +17,70 @@ def __get_instances():
     return d
 
 
-def get_prices_from_barcode(barcode: str):
-    cursor.execute(f"SELECT [Costo],[Mayor],[Detal],[Especial] "
-                   f"FROM [MassPanAdmindb].[dbo].[SAPROD_01] "
-                   f"WHERE [CodProd] = '{barcode}'")
-    for row in cursor:
-        return row
-
-
 def search_product_by_barcode(barcode: str):
     product = {}
-    cursor.execute(f"SELECT [CodProd], [Descrip], [CodInst], [Marca], [Existen] "
-                   f"FROM [MassPanAdmindb].[dbo].[SAPROD] "
-                   f"WHERE [CodProd] = '{barcode}'")
+    cursor.execute(
+        f"SELECT prod.CodProd, prod.Descrip, prod.CodInst, prod.Marca, prod.Existen, "
+        f"usd.Costo, usd.Mayor, usd.Detal, usd.Especial "
+        f"FROM [MassPanAdmindb].[dbo].[SAPROD] as prod INNER JOIN [MassPanAdmindb].[dbo].[SAPROD_01] AS usd "
+        f"ON (prod.CodProd = usd.CodProd) WHERE prod.[CodProd] = '{barcode}'")
     for row in cursor:
-        prices = get_prices_from_barcode(barcode)
-        product = {
-            'code': row[0],
-            'description': row[1],
-            'instance': row[2],
-            'brand': row[3],
-            'exist': float(row[4]),
-            'cost': float(prices[0]),
-            'mayor': float(prices[1]),
-            'detal': float(prices[2]),
-            'special': float(prices[3])
-        }
+        product = {'code': row[0],
+                   'description': row[1],
+                   'instance': row[2],
+                   'brand': row[3],
+                   'exist': float(row[4]),
+                   'cost': float(row[5]),
+                   'mayor': float(row[6]),
+                   'detal': float(row[7]),
+                   'special': float(row[8]),
+                   }
 
     return product
 
 
 def search_products_with(text: str):
     products = []
-    cursor.execute(f"SELECT [CodProd], [Descrip], [CodInst], [Marca], [Existen] "
-                   f"FROM [MassPanAdmindb].[dbo].[SAPROD] "
-                   f"WHERE [Descrip] LIKE '%{text}%'")
+    cursor.execute(f"SELECT prod.CodProd, prod.Descrip, prod.CodInst, prod.Marca, prod.Existen, "
+                   f"usd.Costo, usd.Mayor, usd.Detal, usd.Especial "
+                   f"FROM [MassPanAdmindb].[dbo].[SAPROD] as prod "
+                   f"INNER JOIN [MassPanAdmindb].[dbo].[SAPROD_01] AS usd "
+                   f"ON (prod.CodProd = usd.CodProd) "
+                   f"WHERE prod.[Descrip] LIKE '%{text}%'")
     for row in cursor:
-        products.append({
-            'code': row[0],
-            'description': row[1],
-            'instance': row[2],
-            'brand': row[3],
-            'exist': float(row[4])
-        })
+        products.append(
+            {'code': row[0],
+             'description': row[1],
+             'instance': row[2],
+             'brand': row[3],
+             'exist': float(row[4]),
+             'cost': float(row[5]),
+             'mayor': float(row[6]),
+             'detal': float(row[7]),
+             'special': float(row[8]),
+             })
     return products
 
 
 # Constants
 INSTANCES = __get_instances()
 
-if __name__ == "__main__":
-    print(search_product_by_barcode('7597827000106'))
-    print(search_product_by_barcode('1111111111111'))
+"""*************************************** NOT USED ***************************************"""
+"""*************************************** NOT USED ***************************************"""
+"""*************************************** NOT USED ***************************************"""
+"""*************************************** NOT USED ***************************************"""
+
+
+def get_prices_from_barcode(barcode: str):
+    cursor.execute(f"SELECT [Costo],[Mayor],[Detal],[Especial] "
+                   f"FROM [MassPanAdmindb].[dbo].[SAPROD_01] "
+                   f"WHERE [CodProd] = '{barcode}'")
+    for row in cursor:
+        return [float(row[0]), float(row[1]), float(row[2]), float(row[3])]
+    return []
+
+
+"""*************************************** NOT USED ***************************************"""
+"""*************************************** NOT USED ***************************************"""
+"""*************************************** NOT USED ***************************************"""
+"""*************************************** NOT USED ***************************************"""

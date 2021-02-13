@@ -2,6 +2,7 @@ import cv2
 from pyzbar.pyzbar import decode
 
 from database_mysql import get_all_users
+from src import constants
 
 
 def get_barcode(path) -> str:
@@ -29,11 +30,17 @@ def add_to_unknown_messages(string):
     file.close()
 
 
-def format_float(value: float):
-    #value = round(value, 2)
-
-    print(f'{value:,.2f}')
-
-
-if __name__ == "__main__":
-    format_float(2041085.208)
+def formated_product_list(products, precio: int = 2):
+    PRECIOS = ['cost', 'mayor', 'detal', 'especial']
+    lists = []
+    formated_list = ""
+    for p in products:
+        if len(formated_list) <= 3800:
+            formated_list += f"{p['description']}\n" \
+                             f"Bs.{p[PRECIOS[precio]]*1712325.45:,.2f}\n\n" # constants.DOLAR_FLOAT:,.2f}\n\n"
+        else:
+            lists.append(formated_list)
+            formated_list = "" + f"{p['description']}\n" \
+                             f"Bs.{p[PRECIOS[precio]] * 1712325.45:,.2f}\n\n"  # constants.DOLAR_FLOAT:,.2f}\n\n"
+    lists.append(formated_list)
+    return lists

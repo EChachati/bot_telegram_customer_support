@@ -6,7 +6,8 @@ from telegram import InlineKeyboardMarkup
 import buttons
 import constants
 import database_mysql as mysql
-import database_sql_server as sqlServer
+import database_sql_server as sql_server
+from src import utils
 from utils import get_barcode, add_to_unknown_messages
 
 global photo_id
@@ -131,7 +132,7 @@ def codebarHandler(update, context):
         photo_id += 1
     else:
         logger.info(f'El user {username} ({name}) ha enviado un código de barras')
-        product = sqlServer.search_product_by_barcode(code)
+        product = sql_server.search_product_by_barcode(code)
         if product == {}:
             bot.sendMessage(chat_id=chat_id, text=f"El producto con el código de barras '{code}' no existe")
             photo_id += 1
@@ -182,6 +183,14 @@ def textHandler(update, context):
     elif text == '📓 Contacta al Desarrollador':
         getContactoDesarrollador(update, context)
     else:
-        unexcepted_command = (f'{username}({name}) send "{text}" is not a command')
-        logger.info(unexcepted_command)
-        add_to_unknown_messages(unexcepted_command)
+        products = sql_server.search_products_with(text)
+        if products:
+            product_lists = utils.formated_product_list(products)
+            logger.info(f'{username}({name}) Ask price for "{text}" products')
+            for product_list in product_lists:
+                update.message.reply_text(product_list)
+        else:
+            update.message.reply_text(f"No hay productos relacionados a '{text}'")
+            unexcepted_command = (f'{username}({name}) send "{text}" is not a command')
+            logger.info(unexcepted_command)
+            add_to_unknown_messages(unexcepted_command)

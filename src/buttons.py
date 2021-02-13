@@ -18,6 +18,7 @@ location = InlineKeyboardButton(text=' 📍   Ver Ubicación ', callback_data='l
 schedule = InlineKeyboardButton(text=' 📆   Ver Horario', callback_data='schedule')
 exchange = InlineKeyboardButton(text=' 🏦   Ver Tasa de Cambio', callback_data='exchange')
 GPS = InlineKeyboardButton(text='Ir por GPS', url="https://goo.gl/maps/EyY7VMz8bX3MEACF7")
+
 # InlineKeyboardMarkup
 keyboard_commands = InlineKeyboardMarkup([
     [location, schedule],

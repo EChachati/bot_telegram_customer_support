@@ -20,7 +20,10 @@ def get_dolar_value():
 
 
 # String Constants
-DOLAR_STR, DOLAR_FLOAT = get_dolar_value()
+__DOLAR = get_dolar_value()
+DOLAR_STR = __DOLAR[0]
+DOLAR_FLOAT = __DOLAR[1]
+
 EXCHANGE_VALUE = f"La Tasa de cambio que manejamos usualmente es la tasa promedio, actualmente es de:\n {DOLAR_STR}"
 
 
