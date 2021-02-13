@@ -1,8 +1,10 @@
+from datetime import datetime
+
 import mysql.connector
-from src.secret import DB_PASSWORD as PASSWORD
+from secret import DB_PASSWORD as PASSWORD
 
 # Declare handlers
-from src.users import User
+from users import User
 
 connection_mysql = mysql.connector.connect(user='root',
                                            password=PASSWORD,
@@ -33,6 +35,14 @@ def get_all_users():
     users = {}
     for q in sqlQuery:
         users[q[0]] = (User(q[0], q[1], q[2], q[3]))
-    # for d in users:
-    #    print(users[d])
     return users
+
+
+def add_log_to_db(chat_id: int, text: str):
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log = f'{date} {text}'
+    sqlHandler.execute(f'INSERT INTO mass_pan_telegram_bot.logs (chat_id, text) VALUES ({chat_id}, "{log}")')
+    connection_mysql.commit()
+
+if __name__ == "__main__":
+    add_log_to_db(581235655, 'El user Echachati (Chachati) ha iniciado el bot')

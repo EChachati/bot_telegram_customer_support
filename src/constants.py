@@ -1,9 +1,8 @@
 import telegram
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
-from datetime import datetime
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 # Methods
@@ -11,14 +10,18 @@ def get_dolar_value():
     # Obtener Tasa del dolar
     driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
     driver.get('https://exchangemonitor.net/dolar-promedio-venezuela')
-    promedio_tasa_dolar = WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.TAG_NAME, 'h2'))).text
+    promedio_tasa_dolar: str = WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.TAG_NAME, 'h2'))).text
     driver.quit()
-    return promedio_tasa_dolar
+    promedio_tasa_dolar_float = promedio_tasa_dolar.replace(" ", "") \
+        .replace("VES/USD", "") \
+        .replace(".", "_") \
+        .replace(",", ".")
+    return [promedio_tasa_dolar, float(promedio_tasa_dolar_float)]
 
 
 # String Constants
-DOLAR = get_dolar_value()
-EXCHANGE_VALUE = f"La Tasa de cambio que manejamos usualmente es la tasa promedio, actualmente es de:\n {DOLAR}"
+DOLAR_STR, DOLAR_FLOAT = get_dolar_value()
+EXCHANGE_VALUE = f"La Tasa de cambio que manejamos usualmente es la tasa promedio, actualmente es de:\n {DOLAR_STR}"
 
 
 def START_INFO(name: str = ""):

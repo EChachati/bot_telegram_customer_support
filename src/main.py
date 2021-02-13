@@ -7,7 +7,7 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
 from secret import TOKEN
-from src import commands
+import commands
 
 if __name__ == "__main__":
     # obtener info del bot

@@ -1,14 +1,11 @@
-from datetime import datetime
-from threading import Thread
-import  time
 import cv2
 from pyzbar.pyzbar import decode
 
-from src.database_mysql import get_all_users
+from database_mysql import get_all_users
 
 
 def get_barcode(path) -> str:
-    _code = 'NO LEGIBLE'
+    _code = 'inlegible'
     img = decode(cv2.imread(path))
     for obj in img:
         _code = f'{obj.data}'
@@ -31,3 +28,12 @@ def add_to_unknown_messages(string):
     file.write(f'\n{string}')
     file.close()
 
+
+def format_float(value: float):
+    #value = round(value, 2)
+
+    print(f'{value:,.2f}')
+
+
+if __name__ == "__main__":
+    format_float(2041085.208)

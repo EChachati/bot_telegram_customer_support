@@ -3,10 +3,14 @@ import os
 
 from telegram import InlineKeyboardMarkup
 
+import buttons
 import constants
-import database_mysql as sql
-from src import buttons
-from src.utils import get_barcode, add_to_unknown_messages
+import database_mysql as mysql
+import database_sql_server as sqlServer
+from utils import get_barcode, add_to_unknown_messages
+
+global photo_id
+photo_id = 0
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
@@ -19,10 +23,14 @@ def getBotInfo(update, context):
     name = update.effective_user["first_name"]
     last_name = update.effective_user["last_name"]
     username = update.effective_user.username
-    logger.info(f'El user {username} ({name}) ha iniciado el bot')
 
-    if not sql.is_active_user(chat_id):
-        sql.insert_user(chat_id=chat_id, username=username, first_name=name, last_name=last_name)
+    logger.info(f'El user {username} ({name}) ha iniciado el bot')
+    mysql.add_log_to_db(chat_id, f'El user {username} ({name}) ha iniciado el bot')
+
+    if not mysql.is_active_user(chat_id):
+        mysql.insert_user(chat_id=chat_id, username=username, first_name=name, last_name=last_name)
+        logger.info(f'El user {username} ({name}) se ha añadido a la Database')
+        mysql.add_log_to_db(chat_id, f'El user {username} ({name}) se ha añadido a la Database')
 
     mybot.sendMessage(
         chat_id=chat_id,
@@ -38,7 +46,8 @@ def getSchedule(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido el horario al bot')
     try:
-        context.bot.sendMessage(text=constants.SCHEDULE, parse_mode="HTML")
+        mysql.add_log_to_db(update.message.chat_id, f'El user {username} ({name}) le ha pedido el horario al bot')
+        context.bot.sendMessage(chat_id=update.message.chat_id, text=constants.SCHEDULE, parse_mode="HTML")
     except:
         query = update.callback_query
         query.answer()
@@ -51,6 +60,7 @@ def getLocation(update, context):
     logger.info(f'El user {username} ({name}) le ha pedido la ubicacion al bot')
 
     try:
+        mysql.add_log_to_db(update.message.chat_id, f'El user {username} ({name}) le ha pedido la ubicacion al bot')
         update.message.reply_text(text=constants.LOCATION)
         context.bot.sendLocation(
             reply_markup=InlineKeyboardMarkup([[buttons.GPS]]),
@@ -68,6 +78,8 @@ def getExchange(update, context):
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha pedido la Tasa de Cambio al bot')
     try:
+        mysql.add_log_to_db(update.message.chat_id,
+                            f'El user {username} ({name}) le ha pedido la tasa de cambio al bot')
         mybot.sendMessage(
             chat_id=update.message.chat_id,
             parse_mode="HTML",
@@ -84,6 +96,8 @@ def getContactoDesarrollador(update, context):
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     logger.info(f'El user {username} ({name}) le ha solicitado la información del desarrollador')
+    mysql.add_log_to_db(update.message.chat_id,
+                        f'El user {username} ({name}) le ha solicitado la información del desarrollador')
 
     mybot.sendMessage(
         chat_id=update.message.chat_id,
@@ -95,22 +109,42 @@ def getContactoDesarrollador(update, context):
 
 def codebarHandler(update, context):
     # Declarate vars
+    global photo_id
     bot = context.bot
     username = update.effective_user.username
     name = update.effective_user["first_name"]
     file_id = update.message.photo[-1].file_id
+    chat_id = update.message.chat_id
 
     # Download the file
     newFile = bot.getFile(file_id)
-    newFile.download('test.jpg')
+    newFile.download(f'{photo_id}.jpg')
 
     # Get the bar code
-    code = get_barcode('test.jpg')
-    bot.sendMessage(chat_id=update.message.chat_id, text=f"El Código de barras es {code}")
-    logger.info(f'El user {username} ({name}) ha enviado un código de barras')
+    code = get_barcode(f'{photo_id}.jpg')
 
-    # Delete the file
-    os.remove('test.jpg')
+    if code == 'inlegible':
+        bot.sendMessage(chat_id=chat_id, text=f"El Código de barras es {code}")
+        logger.info(f'El user {username} ({name}) ha enviado un código de barras {code}')
+        mysql.add_log_to_db(update.message.chat_id,
+                            f'El user {username} ({name})  ha enviado un código de barras {code}')
+        photo_id += 1
+    else:
+        logger.info(f'El user {username} ({name}) ha enviado un código de barras')
+        product = sqlServer.search_product_by_barcode(code)
+        if product == {}:
+            bot.sendMessage(chat_id=chat_id, text=f"El producto con el código de barras '{code}' no existe")
+            photo_id += 1
+        else:
+            # Delete the file
+            price = product['detal'] * constants.DOLAR_FLOAT
+            os.remove(f'{photo_id}.jpg')
+            bot.sendMessage(chat_id=chat_id,
+                            text=f"{product['description']}\nAproximadamente Bs. {price:,.2f}")
+            logger.info(
+                f'El user {username} ({name}) ha recibido el precio del producto {product["description"]} Bs. {price:,.2f}')
+            mysql.add_log_to_db(update.message.chat_id,
+                                f'El user {username} ({name}) ha recibido el precio del producto {product["description"]} Bs. {price:,.2f}')
 
 
 def getAllCommands(update, context):
