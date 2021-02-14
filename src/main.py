@@ -8,6 +8,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 
 from secret import TOKEN
 import commands
+from src.utils import actualization_message
 
 if __name__ == "__main__":
     # obtener info del bot

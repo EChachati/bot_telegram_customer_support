@@ -21,7 +21,10 @@ def actualization_message(bot):
             text="¡Hola! ¡¡Este bot ha sido actualizado!! Por favor presiona en /start para obtener los cambios,"
                  " se ha añadido: "
                  "\n - Un Menu de acciones"
-                 "\n - Lector de codigos de barras por fotos")
+                 "\n - Escribe un mensaje con algún código que quieras buscar"
+                 "\n - Puedes moverte por nuestros menus para buscar precios al por mayor y por categoria"
+                 "\n - Lector de codigos de barras por fotos"
+                 "\n\nCualquier error que encuentres por favor notificalo para que sea arreglado")
 
 
 def add_to_unknown_messages(string):
@@ -37,10 +40,10 @@ def formated_product_list(products, precio: int = 2):
     for p in products:
         if len(formated_list) <= 3800:
             formated_list += f"{p['description']}\n" \
-                             f"Bs.{p[PRECIOS[precio]]*1712325.45:,.2f}\n\n" # constants.DOLAR_FLOAT:,.2f}\n\n"
+                             f"Bs.{p[PRECIOS[precio]] * constants.DOLAR_FLOAT:,.2f}  ${p[PRECIOS[precio]]}\n\n"
         else:
             lists.append(formated_list)
             formated_list = "" + f"{p['description']}\n" \
-                             f"Bs.{p[PRECIOS[precio]] * 1712325.45:,.2f}\n\n"  # constants.DOLAR_FLOAT:,.2f}\n\n"
+                                 f"Bs.{p[PRECIOS[precio]] * constants.DOLAR_FLOAT:,.2f}  ${p[PRECIOS[precio]]}\n\n"
     lists.append(formated_list)
     return lists

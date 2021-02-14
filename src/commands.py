@@ -7,8 +7,7 @@ import buttons
 import constants
 import database_mysql as mysql
 import database_sql_server as sql_server
-from src import utils
-from utils import get_barcode, add_to_unknown_messages
+from utils import get_barcode, add_to_unknown_messages, formated_product_list
 
 global photo_id
 photo_id = 0
@@ -19,19 +18,19 @@ logger = logging.getLogger()
 
 def getBotInfo(update, context):
     mybot = context.bot
-    print(update.message)
     chat_id = update.message.chat_id
     name = update.effective_user["first_name"]
     last_name = update.effective_user["last_name"]
     username = update.effective_user.username
 
     logger.info(f'El user {username} ({name}) ha iniciado el bot')
-    mysql.add_log_to_db(chat_id, f'El user {username} ({name}) ha iniciado el bot')
 
     if not mysql.is_active_user(chat_id):
         mysql.insert_user(chat_id=chat_id, username=username, first_name=name, last_name=last_name)
         logger.info(f'El user {username} ({name}) se ha añadido a la Database')
         mysql.add_log_to_db(chat_id, f'El user {username} ({name}) se ha añadido a la Database')
+
+    mysql.add_log_to_db(chat_id, f'El user {username} ({name}) ha iniciado el bot')
 
     mybot.sendMessage(
         chat_id=chat_id,
@@ -39,7 +38,7 @@ def getBotInfo(update, context):
         text=constants.START_INFO(name),
         reply_markup=buttons.social_networks
     )
-    update.message.reply_text(text="Elige un comando: ", reply_markup=buttons.replyKeyboard)
+    update.message.reply_text(text="Elige un comando: ", reply_markup=buttons.menuKeyboard)
 
 
 def getSchedule(update, context):
@@ -136,6 +135,8 @@ def codebarHandler(update, context):
         if product == {}:
             bot.sendMessage(chat_id=chat_id, text=f"El producto con el código de barras '{code}' no existe")
             photo_id += 1
+            mysql.add_log_to_db(chat_id=chat_id,
+                                text=f"El User {username} ({name}) busco un producto que no existe '{code}'")
         else:
             # Delete the file
             price = product['detal'] * constants.DOLAR_FLOAT
@@ -162,6 +163,14 @@ def getAllCommands(update, context):
     )
 
 
+def switch_to_prices_keyboard(update, context):
+    context.bot.sendMessage(
+        chat_id=update.message.chat_id,
+        text=f"Moviendo al Menu precios",
+        reply_markup=buttons.pricesKeyboard
+    )
+
+
 def textHandler(update, context):
     # Declarate vars
     username = update.effective_user.username
@@ -174,9 +183,24 @@ def textHandler(update, context):
         getSchedule(update, context)
     elif text == '🏦   Ver Tasa de Cambio':
         getExchange(update, context)
-    elif text == '🔍 Ver Codigo de Barras':
-        logger.info(f'El user {username} ({name}) quiere revisar un código de barras')
+
+    elif text == '🔍 Buscar Precios':
+        logger.info(f'El user {username} ({name}) Se mueve al menu de precios')
+        switch_to_prices_keyboard(update, context)
+
+    elif text == 'Precios Al Mayor':
+        sql_server.get_product_list_major(update, context)
+        logger.info(f'El User {username} ({name}) solicito la lista de precios al mayor')
+        mysql.add_log_to_db(chat_id=update.message.chat_id,
+                            text=f'El User {username} ({name}) solicito la lista de precios al mayor')
+    elif text == 'Precios Por Categoria':
+        update.message.reply_text(text="Elige una Categoria", reply_markup=buttons.intanceKeyboard)
+    elif text == 'Buscar por Mensaje':
+        update.message.reply_text("Envianos un mensaje con alguna palabra clave del producto buscado")
+    elif text == 'Buscar Por Codigo':
         update.message.reply_text("Envianos una foto nitida del código de barras a analizar")
+    elif text == 'Volver Al Menu':
+        update.message.reply_text(text="Volviendo al Menu", reply_markup=buttons.menuKeyboard)
     elif text == '📱 Redes Sociales':
         logger.info(f'El user {username} ({name}) quiere conocer las redes sociales')
         update.message.reply_text("Siguenos en nuestras Redes Sociales", reply_markup=buttons.social_networks)
@@ -184,11 +208,24 @@ def textHandler(update, context):
         getContactoDesarrollador(update, context)
     else:
         products = sql_server.search_products_with(text)
-        if products:
-            product_lists = utils.formated_product_list(products)
+
+        if text in sql_server.INSTANCES.keys():
+            products = sql_server.search_products_by_instance(sql_server.INSTANCES[text])
+            product_lists = formated_product_list(products)
             logger.info(f'{username}({name}) Ask price for "{text}" products')
+            update.message.reply_text(f"PRODUCTOS CATEGORIA: {text}")
             for product_list in product_lists:
                 update.message.reply_text(product_list)
+            mysql.add_log_to_db(chat_id=update.message.chat_id,
+                                text=f"{username}({name}) Ask price for '{text}' products")
+
+        elif products:
+            product_lists = formated_product_list(products)
+            logger.info(f"{username}({name}) Ask price for '{text}' products")
+            for product_list in product_lists:
+                update.message.reply_text(product_list)
+            mysql.add_log_to_db(chat_id=update.message.chat_id,
+                                text=f"{username}({name}) Ask price for '{text}' products)")
         else:
             update.message.reply_text(f"No hay productos relacionados a '{text}'")
             unexcepted_command = (f'{username}({name}) send "{text}" is not a command')

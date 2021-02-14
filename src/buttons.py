@@ -1,4 +1,5 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
+import database_sql_server as sql_server
 
 # Developer Social Networks
 developer_telegram = InlineKeyboardButton(text='Escribele al desarrollador', url="telegram.me/echachati")
@@ -28,7 +29,6 @@ keyboard_commands = InlineKeyboardMarkup([
 developer_social_networks = InlineKeyboardMarkup([
     [developer_github],
     [developer_linkedin],
-    [developer_twitter, developer_instagram],
     [developer_telegram]
 ])
 
@@ -41,10 +41,26 @@ social_networks = InlineKeyboardMarkup([
 
 # ReplyKeyboardMarkup
 
-replyKeyboard = ReplyKeyboardMarkup([
+menuKeyboard = ReplyKeyboardMarkup([
     ['📍   Ver Ubicación '],
     [' 📆   Ver Horario'],
     [' 🏦   Ver Tasa de Cambio'],
-    ['🔍 Ver Codigo de Barras'],
+    ['🔍 Buscar Precios'],
     [' 📱 Redes Sociales', ' 📓 Contacta al Desarrollador']
 ])
+
+pricesKeyboard = ReplyKeyboardMarkup([
+    ['Precios Al Mayor'],
+    ['Precios Por Categoria'],
+    ['Buscar por Mensaje'],
+    ['Buscar Por Codigo'],
+    ['Volver Al Menu']
+])
+
+intancesButtons = []
+for k in sql_server.INSTANCES:
+    if sql_server.INSTANCES[k] not in [1025, 24, 22, 15]:
+        intancesButtons.append([k])
+intancesButtons.append(['Volver Al Menu'])
+
+intanceKeyboard = ReplyKeyboardMarkup(intancesButtons)

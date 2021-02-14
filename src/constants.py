@@ -32,10 +32,7 @@ def START_INFO(name: str = ""):
         f'¡Hola {name}! Soy un bot encargado de ayudarte con tus compras en la Panaderia Mass Pan, sin embargo, aun '
         f'me encuentro en desarrollo, puedes escribirle a nuestro equipo @MassPan o al número de telefono +58 412 773 6899 '
         f'para resolver tu dudas\n\n'
-        f'Puedes clickear en estos /comandos :\n'
-        f'  📍   /ubicacion\n'
-        f'  📆   /horario\n'
-        f'  🏦   /tasaCambio\n'
+        f'Puedes moverte usando nuestro menu, o escribir algún producto en el que estes interesado\n'
         f'\n Y recuerda <b>¡¡Mass Sabor con Mass Pan!!</b>'
         f'\n\n Contactanos con las siguentes apps'
         f'\n  👇👇👇👇👇👇👇👇👇👇👇👇')
