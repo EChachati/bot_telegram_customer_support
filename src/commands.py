@@ -1,3 +1,4 @@
+"""
 import logging
 import os
 
@@ -231,3 +232,4 @@ def textHandler(update, context):
             unexcepted_command = (f'{username}({name}) send "{text}" is not a command')
             logger.info(unexcepted_command)
             add_to_unknown_messages(unexcepted_command)
+"""

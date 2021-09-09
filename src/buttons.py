@@ -1,3 +1,4 @@
+"""
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
 import database_sql_server as sql_server
 
@@ -64,3 +65,4 @@ for k in sql_server.INSTANCES:
 intancesButtons.append(['Volver Al Menu'])
 
 intanceKeyboard = ReplyKeyboardMarkup(intancesButtons)
+"""

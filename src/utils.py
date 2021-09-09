@@ -1,7 +1,7 @@
 import cv2
 from pyzbar.pyzbar import decode
-
-from database_mysql import get_all_users
+# Banned DB
+#from database_mysql import get_all_users
 from src import constants
 
 
