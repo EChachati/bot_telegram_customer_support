@@ -6,7 +6,7 @@ from src import constants
 
 
 def get_barcode(path) -> str:
-    _code = 'inlegible'
+    _code = 'ilegible'
     img = decode(cv2.imread(path))
     for obj in img:
         _code = f'{obj.data}'
