@@ -2,7 +2,7 @@ import cv2
 from pyzbar.pyzbar import decode
 # Banned DB
 #from database_mysql import get_all_users
-from src import constants
+#from src import constants
 
 
 def get_barcode(path) -> str:

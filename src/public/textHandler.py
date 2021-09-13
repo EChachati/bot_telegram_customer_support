@@ -7,13 +7,15 @@ logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
 
+'''
 base_text_command = {
     '📍   Ver Ubicación': getLocation,
     '📆   Ver Horario': getSchedule,
-    '🏦   Ver Tasa de Cambio': getExchange,
+    '🏦💱💲   Ver Tasa de Cambio': getExchange,
     '📓 Contacta al Desarrollador': getContactoDesarrollador,
 
 }
+'''
 
 
 def textHandler(update, context):
@@ -41,7 +43,6 @@ def textHandler(update, context):
             text="Volviendo al Menu", reply_markup=buttons.menuKeyboard)
 
     elif text == '🔍 Buscar Precios':
-        logger.info(f'El user {username} ({name}) Se mueve al menu de precios')
         switch_to_prices_keyboard(update, context)
 
     elif text == 'Precios Al Mayor':
@@ -58,6 +59,7 @@ def textHandler(update, context):
             "Siguenos en nuestras Redes Sociales", reply_markup=buttons.social_networks)
 
     else:
+        """ Esta mamada no tiene DB
         products = sql_server.search_products_with(text)
 
         if text in sql_server.INSTANCES.keys():
@@ -85,3 +87,4 @@ def textHandler(update, context):
                 f'{username}({name}) send "{text}" is not a command')
             logger.info(unexcepted_command)
             add_to_unknown_messages(unexcepted_command)
+        """

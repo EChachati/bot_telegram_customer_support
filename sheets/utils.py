@@ -3,6 +3,9 @@ import pandas as pd
 
 # https://www.youtube.com/watch?v=T1vqS1NL89E
 
+GOOGLE_CREDENTIALS = 'sheets\credentials.json'
+ACCOUNT_STATE_SHEET_KEY = '1qsssy55XNV-j49jHiA2QlCvDwUrCc0IKsYR6HBfSx6A'
+
 
 def getGoogleSpreadsheet(google_credentials, document_key):
     credentials = gs.service_account(filename=google_credentials)

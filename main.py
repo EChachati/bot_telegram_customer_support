@@ -4,12 +4,15 @@
 ########################
 
 import telegram
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler
 
 from src.secret import TOKEN
 import src.public.commands as commands
 from src.public.textHandler import textHandler
 from src.utils import actualization_message
+from src.public import mobilePayment as pm
+
+from src.public.menu import menuHandler as menu
 
 if __name__ == "__main__":
     # obtener info del bot
@@ -24,6 +27,7 @@ if __name__ == "__main__":
     dispatcher = updater.dispatcher
 
     # crear comando
+    '''
     dispatcher.add_handler(CommandHandler("start", commands.getBotInfo))
     dispatcher.add_handler(CommandHandler("horario", commands.getSchedule))
     dispatcher.add_handler(CommandHandler("ubicacion", commands.getLocation))
@@ -31,12 +35,12 @@ if __name__ == "__main__":
     dispatcher.add_handler(CommandHandler(
         "contact", commands.getContactoDesarrollador))
     dispatcher.add_handler(CommandHandler("comandos", commands.getAllCommands))
-
+    '''
     # MessageHandlers
     dispatcher.add_handler(MessageHandler(
         Filters.photo, commands.codebarHandler))
-    dispatcher.add_handler(MessageHandler(Filters.text, textHandler))
-
+    #dispatcher.add_handler(MessageHandler(Filters.text, textHandler))
+    '''
     # Callbacks
     dispatcher.add_handler(CallbackQueryHandler(
         commands.getSchedule, pattern='schedule'))
@@ -44,6 +48,8 @@ if __name__ == "__main__":
         commands.getExchange, pattern='exchange'))
     dispatcher.add_handler(CallbackQueryHandler(
         commands.getLocation, pattern='location'))
+    '''
+    dispatcher.add_handler(menu.MenuConversationHandler)
 
     # Actualization Message
     # actualization_message(bot)
