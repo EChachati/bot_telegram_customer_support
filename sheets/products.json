@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "products-326723",
+  "private_key_id": "9c05d85bc61274e4793d97c751ff4c7a8da586fb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvJQIV8n62wblI\nlsnAE+SaWo94DKAsgWMMY5HcKYrU1UFVVwSIzelaoSoqctthen9XM0enVIOJefyl\njVOesqliavvhf9i+rsQodq+Io/8e4hTw6I4AEwjk/TZT476wyzGF+p6c5s8T0YfB\n0pNA1UnyDpUhgEcxC/s12Ot7jcfCA9pWTDw3Gv6pmU1iJvOvY/60LHvoOaYaVYTI\nzLnc1wFIewm/uX9zfnNjv1eUj0TyyHRq5tHD/DL3hhIFR/0qHuGVW27nJ8+prRfv\nq8kLkX9S9cyOV7k8Ef1JnWPxI5gkFZYnnGzuFA0c4DA9ZVJDsS65ucpG/PZsC1U4\nqj+PJU+LAgMBAAECggEAMphKRfTLThggYivNFEOq4jwO/esHylOGPWn2FNebV2hT\ne0er86koJBoyiBit7zbn2lTh+iCb7vbiWSC+azXJYLjvEnFQN6Vc3SOMCbj2VgGR\ncxZ7DuJwy1WqgAlmaMQKBl4ju8ehQmRhB0jBaRU0S0yTIB5icnS3mRKU1BhdAFqK\nFWmTSbQtdMo1wC2nqjTiaQzmqvJhYuRdUt6vAz3D3xSU3LiFGf3ksogvP4vvfqQf\n0dCKyyhj9K47oc2E/G2/Bz5A1yLFP4Dzev+keDLuJK1BBmuXwDsaHv7/AG46/lp7\nSrgqRo1it37GxsOL+GuzPOCgClAQPPem1nlr3b5pwQKBgQDeuGWkaGJZyZeWshc/\ncofNoD7OzyNU9AzuEC3hoAhdBAAk55s4/ULhYjptJeo80/E5KLxNuaqcmGKSRbGW\nlw1s0m5WKM+29phktffez2uWsQZVpglwS/z/P0++psHjBY6oPet4vcjmnDNUpZhk\nLfTo12L9FtOXl6oT7OV7xX51wwKBgQDJULipnMA6TtaSJVU1rEZN/SqjM684XCHA\nG+0xdQxsKp6lpsViLNkzj94jLKr+kOsMciM0pIkYD5loRgkVk/Nj7TS1XVCgiePR\naEjhoxYVUJhASFu5OkCp9Wj8wlU4i8P5Ce9pk9/uIXWoMDChxEhroUXOLRPBM8sN\n7/osIqZ6mQKBgBK/uSa+9tCSLOWttlFMBeykecUVIOdM6C2+RO6Cd1HFPXHd4W5J\nu7CXgU2g7HgUa3EhYcC1SYyHM30Wyt1fd+zaRhmQs/O2DJwlyWkDUw5LdroNESxX\n6UNfhAoLpbTDyf+VvtXaPChVq+iLTCnayIw1XYrqugM/7DxjK+pgdMXbAoGASwNN\nC8Zgylk+Es7eZVWADOdcz9seWz3ZRaAiTd9zdYqb+tWdjutvM4tUFn86aAjPzJ9r\nBt6YRuLpIrWWBPhQJNfqX/oZZPh8bzcQkSMXw3F4idtsciSGm83aBPTUlHFf4JgX\nIZv8QNsu4DC0rlJZOeGqBR0+0yrdaqAU9AUlS2ECgYEAsZMBfUQqNJDbguPOfT1N\nUcGnR0wOe9KVrElT6zug93uhC6SjW02KMBWLHvcVVyqYSBgjPzmhhIYNlZJfXf3r\nu4FdLkilgmKrssPR6kc3wpwAUExApNXu2nO+Y/QM1TKGlW6W2DnfES45LxyyeswO\n11ESJvGUhg+p8BfCrL5Oon0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "masspanproductsbot@products-326723.iam.gserviceaccount.com",
+  "client_id": "100601410073572358262",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/masspanproductsbot%40products-326723.iam.gserviceaccount.com"
+}

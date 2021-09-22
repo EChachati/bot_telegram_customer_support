@@ -47,3 +47,13 @@ def formated_product_list(products, precio: int = 2):
                                  f"Bs.{p[PRECIOS[precio]] * constants.DOLAR_FLOAT:,.2f}  ${p[PRECIOS[precio]]}\n\n"
     lists.append(formated_list)
     return lists
+
+
+def cleanFloat(x) -> float:
+    x = str(x)
+    if ',' in str(x) and not '.' in str(x):  # 321,21
+        x = str(x).replace(',', '.')
+    elif '.' in str(x) and ',' in str(x):  # 321.210,12
+        x = str(x).replace('.', '').replace(',', '.')
+
+    return float(x)

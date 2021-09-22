@@ -7,7 +7,8 @@ import sheets.utils
 GOOGLE_CREDENTIALS = 'sheets\credentials.json'
 ACCOUNT_STATE_SHEET_KEY = '1qsssy55XNV-j49jHiA2QlCvDwUrCc0IKsYR6HBfSx6A'
 
-if __name__ == '__main__':
+
+def run():
     spreadsheet = utils.getGoogleSpreadsheet(
         GOOGLE_CREDENTIALS, ACCOUNT_STATE_SHEET_KEY)
     df = pd.DataFrame(spreadsheet.sheet1.get_all_records())
@@ -23,3 +24,7 @@ if __name__ == '__main__':
         incomePagoMovil,
         incomePagoMovilSheet,
         dont_repeat_on='Referencia')
+
+
+if __name__ == '__main__':
+    run()

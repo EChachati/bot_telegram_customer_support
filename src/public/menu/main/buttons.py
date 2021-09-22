@@ -51,5 +51,6 @@ menuKeyboard = ReplyKeyboardMarkup([
     [' 💱 Registrar Pago Movil'],
     [' 💲   Ver Tasa de Cambio'],
     ['🔍 Buscar Precios'],
-    [' 📱 Redes Sociales', ' 📓 Contacta al Desarrollador']
+    [' 📱 Redes Sociales', ' 📓 Contacta al Desarrollador'],
+    ['Admin']
 ])

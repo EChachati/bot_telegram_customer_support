@@ -10,9 +10,10 @@ from src.secret import TOKEN
 import src.public.commands as commands
 from src.public.textHandler import textHandler
 from src.utils import actualization_message
-from src.public import mobilePayment as pm
 
 from src.public.menu import menuHandler as menu
+
+from src.admin import commands as admin
 
 if __name__ == "__main__":
     # obtener info del bot
@@ -25,7 +26,8 @@ if __name__ == "__main__":
 
     # crear despachador
     dispatcher = updater.dispatcher
-
+    # Add Admin Commands
+    dispatcher = admin.add_commands(dispatcher)
     # crear comando
     '''
     dispatcher.add_handler(CommandHandler("start", commands.getBotInfo))

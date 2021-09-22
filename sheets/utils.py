@@ -1,10 +1,15 @@
 import gspread as gs
+from gspread.exceptions import APIError
 import pandas as pd
+import time
+import os
 
 # https://www.youtube.com/watch?v=T1vqS1NL89E
 
 GOOGLE_CREDENTIALS = 'sheets\credentials.json'
 ACCOUNT_STATE_SHEET_KEY = '1qsssy55XNV-j49jHiA2QlCvDwUrCc0IKsYR6HBfSx6A'
+PRODUCTS_SHEET_KEY = '1v9-biZURtJQfqXsUK16R3MEDrYOAtG_ry-P0VlkL1xg'
+PRODUCTS_CREDENTIALS = 'sheets\products.json'
 
 
 def getGoogleSpreadsheet(google_credentials, document_key):
@@ -55,10 +60,20 @@ def writeDataframeInSheet(df, sheet, dont_repeat_on=None):
         sheet.append_row(columns)
 
     for row in rows:
-        if dont_repeat_on:
-            if row[index] not in values:
-                sheet.append_row(row)
-            else:
-                pass
-        else:
-            sheet.append_row(row)
+        while True:
+            try:
+                if dont_repeat_on:
+                    if row[index] not in values:
+                        sheet.append_row(row)
+                    else:
+                        pass
+                else:
+                    sheet.append_row(row)
+                break
+            except APIError:
+                t = 65
+                while t >= 1:
+                    time.sleep(1)
+                    t -= 1
+                    os.system('cls')
+                    print(f'Waiting for request limitation...({t} seconds)')

@@ -1,5 +1,6 @@
 import logging
 import os
+import pandas as pd
 
 from telegram import InlineKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler, CommandHandler, MessageHandler, Filters
@@ -8,12 +9,12 @@ from datetime import datetime
 
 from src.public.menu.main import buttons
 from sheets import utils as sheets
+from src.states import *
+from src import utils
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
-MAIN, PRODUCTS, PAGO_MOVIL = range(3)
-REF, AMOUNT, PHONE = range(3, 6)
 
 
 def get_ref(update: Update, context: CallbackContext) -> int:
@@ -42,7 +43,7 @@ def get_amount(update: Update, context: CallbackContext) -> int:
     else:
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
-            text='¡Bien! Ahora ingresa el monto que transferiste, usa el siguente formato en el mensaje: 1234567.89  (Envia solo el número)',
+            text='¡Bien! Ahora ingresa el monto que transferiste, usa el siguente formato en el mensaje: 1234567.89  (Envia solo la cantidad transferida)',
             reply_markup=ReplyKeyboardRemove()
         )
     return AMOUNT
@@ -61,22 +62,42 @@ def get_phone(update: Update, context: CallbackContext) -> int:
 def end_payment(update: Update, context: CallbackContext) -> int:
     context.user_data['phone'] = update.message.text
 
+    # Obtener Datos
+
     date = datetime.now().strftime('%d/%m/%Y')
     phone = context.user_data['phone']
-    amount = context.user_data['amount']
-    reference = context.user_data['reference']
+    amount = utils.cleanFloat(context.user_data['amount'])
+    reference = int(context.user_data['reference'])
     chat_id = update.message.chat.id
     username = update.message.chat.username
     first_name = update.message.chat.first_name
     last_name = update.message.chat.last_name
 
-    data = [date, chat_id, username, first_name,
-            last_name, phone, reference, amount]
-
+    # Guardar hojas de Trabajo
     sheet = sheets.getGoogleSpreadsheet(
         sheets.GOOGLE_CREDENTIALS,
         sheets.ACCOUNT_STATE_SHEET_KEY
     )
+    # Obtener hoja donde se encuentra los PM de los estados de cuenta y guardar en DataFrame
+    pm_sheet = sheet.worksheet('Ingreso Pago Movil')
+    mobilePayments = pd.DataFrame(
+        pm_sheet.get_all_records()
+    )
+
+    # Verificar si Referencia Existe y actualizar en tabla de PM de ser asi
+    if True in (mobilePayments['Referencia'] == reference):
+        status = 'Verificado'
+        row = pm_sheet.find(str(reference)).row
+        col = 6
+        pm_sheet.update_cell(row, col, 'Verificado')
+    else:
+        status = 'No Verificado'
+
+    # Guardar los datos en un Array
+    data = [date, chat_id, username, first_name,
+            last_name, phone, reference, amount, status]
+
+    # Añadir datos de registro de PM en Google Sheet
     sh = sheet.worksheet('TLG Pago Movil').append_row(data)
     context.bot.sendMessage(
         chat_id=update.message.chat_id,

@@ -16,7 +16,8 @@ command_dict = {
     '💲   Ver Tasa de Cambio': commands.getExchange,
     '📓 Contacta al Desarrollador': commands.getDeveloperContact,
     '🔍 Buscar Precios': commands.switchToPrices,
-    '💱 Registrar Pago Movil': commands.switchToMobilePayment
+    '💱 Registrar Pago Movil': commands.switchToMobilePayment,
+    'Admin': commands.switchToAdminMenu
 }
 
 

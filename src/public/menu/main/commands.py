@@ -1,14 +1,16 @@
+from src.states import *
 import logging
 from telegram import Update, InlineKeyboardMarkup, ReplyKeyboardMarkup
 from telegram.ext import CallbackContext
 from src.public.menu.main import constants, buttons
 from src.public import exchange
+from src.admin.menu import buttons as adminButtons
+from src.admin.users import is_admin
+
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
-
-MAIN, PRODUCTS, PAGO_MOVIL = range(3)
 
 
 def getBotInfo(update: Update, context: CallbackContext) -> int:
@@ -134,6 +136,31 @@ def switchToMobilePayment(update: Update, context: CallbackContext) -> int:
     )
 
     return PAGO_MOVIL
+
+
+def switchToAdminMenu(update: Update, context: CallbackContext) -> int:
+    logger.info("User %s expected to get into admin mode.",
+                update.effective_user['first_name'])
+
+    if is_admin(update.message.chat_id):
+
+        logger.info("User %s expected to get into admin mode. Authorized",
+                    update.effective_user['first_name'])
+
+        context.bot.sendMessage(
+            chat_id=update.message.chat_id,
+            text='Apto para menu de Admin',
+            reply_markup=adminButtons.menuKeyboard
+            # ReplyKeyboardMarkup([
+            #   ['Confirmar Entrada a Modo Admin'],
+            #    ['Cancelar Entrada a Modo Admin']
+            # ])
+        )
+        return ADMIN
+    else:
+        logger.info("User %s expected to get into admin mode. Fail",
+                    update.effective_user['first_name'])
+        return MAIN
 
 
 def cancel(update: Update, context: CallbackContext) -> int:
