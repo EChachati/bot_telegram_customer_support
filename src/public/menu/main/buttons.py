@@ -54,3 +54,11 @@ menuKeyboard = ReplyKeyboardMarkup([
     [' 📱 Redes Sociales', ' 📓 Contacta al Desarrollador'],
     ['Admin']
 ])
+
+pricesKeyboard = ReplyKeyboardMarkup([
+    ['Precios Al Mayor'],
+    ['Precios Por Categoria'],
+    ['Buscar por Mensaje'],
+    ['Buscar Por Codigo'],
+    ['Volver Al Menu']
+])

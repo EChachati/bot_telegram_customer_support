@@ -8,7 +8,7 @@ from src.states import *
 import src.public.menu.mobilePayment as pm
 from src.admin.menu import handler as admin
 from src.admin.menu import commands as adminCommands
-
+from src.public.product import handler as product
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,")
 logger = logging.getLogger()
@@ -30,7 +30,7 @@ MenuConversationHandler = ConversationHandler(
             CommandHandler('admin', adminCommands.menu)
         ],
         PRODUCTS: [
-
+            product.handler
         ],
         PAGO_MOVIL: [
             pm.handler

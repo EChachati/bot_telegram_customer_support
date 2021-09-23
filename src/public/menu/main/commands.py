@@ -6,6 +6,7 @@ from src.public.menu.main import constants, buttons
 from src.public import exchange
 from src.admin.menu import buttons as adminButtons
 from src.admin.users import is_admin
+from src.public.product import buttons as product
 
 
 logging.basicConfig(level=logging.INFO,
@@ -116,8 +117,8 @@ def switchToPrices(update: Update, context: CallbackContext) -> int:
     logger.info(f'El user {username} ({name}) Se mueve al menu de precios')
     context.bot.sendMessage(
         chat_id=update.message.chat_id,
-        text=f"Moviendo al Menu precios",
-        reply_markup=buttons.pricesKeyboard
+        text=f"¡Hola! Por favor dinos si estas interesados a los precios regulares (por menor), o en los precios al por mayor",
+        reply_markup=product.priceTypeKeyboard
     )
     return PRODUCTS
 

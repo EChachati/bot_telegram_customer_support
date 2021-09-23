@@ -129,9 +129,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
 # Secret elementes
 src/secret.py
 unknown_messages_file.txt
+*.json
 
 # XML and IML
 *.xml

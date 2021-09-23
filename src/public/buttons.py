@@ -16,14 +16,6 @@ keyboard_commands = InlineKeyboardMarkup([
 
 # ReplyKeyboardMarkup
 
-pricesKeyboard = ReplyKeyboardMarkup([
-    ['Precios Al Mayor'],
-    ['Precios Por Categoria'],
-    ['Buscar por Mensaje'],
-    ['Buscar Por Codigo'],
-    ['Volver Al Menu']
-])
-
 """
 BANNED WHILE NOT DB
 intancesButtons = []

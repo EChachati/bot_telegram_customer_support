@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def get_dolar_value():
     # Obtener Tasa del dolar
-    #    driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
+    # driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get('https://exchangemonitor.net/dolar-promedio-venezuela')
     promedio_tasa_dolar: str = WebDriverWait(driver, 10).until(
